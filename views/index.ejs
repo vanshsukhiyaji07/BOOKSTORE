@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore - Your Literary Haven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links .active {
+            background-color: #4CAF50;
+        }
+
+        /* Simplified Banner Styles */
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(44, 62, 80, 0.9), rgba(52, 152, 219, 0.7));
+            z-index: 1;
+        }
+
+        .banner-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .banner h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+        }
+
+        .banner-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .books-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .book-author {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-price {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.1rem;
+        }
+
+        .book-rating {
+            color: #ffc107;
+            margin-top: 0.5rem;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .edit-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .edit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Add confirmation dialog styles */
+        .confirmation-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dialog-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .dialog-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .confirm-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .add-book-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #4CAF50;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .add-book-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .banner {
+                background-attachment: scroll;
+                padding: 7rem 1rem 3rem;
+            }
+
+            .banner h1 {
+                font-size: 2.2rem;
+            }
+
+            .banner p {
+                font-size: 1.1rem;
+            }
+
+            .banner-buttons {
+                flex-direction: column;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .book-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span>📚</span> BookStore
+            </a>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/books/add">Add Book</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Simplified Banner Section -->
+    <section class="banner">
+        <div class="banner-content">
+            <h1>Welcome to BookStore</h1>
+            <p>Your one-stop destination for discovering and exploring amazing books. Browse our collection, add your favorites, and start your reading journey today.</p>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="books-section">
+        <h2 class="section-title">Featured Books</h2>
+        <div class="books-grid">
+            <% books.forEach(book => { %>
+                <div class="book-card">
+                    <img src="/<%= book.image %>" alt="<%= book.title %>" class="book-image">
+                    <div class="book-info">
+                        <h3 class="book-title"><%= book.title %></h3>
+                        <p class="book-author">By <%= book.author %></p>
+                        <p class="book-price">$<%= book.price.toFixed(2) %></p>
+                        <div class="book-rating">
+                            <% for(let i = 0; i < Math.floor(book.rating); i++) { %>
+                                ★
+                            <% } %>
+                            <% if(book.rating % 1 !== 0) { %>
+                                ⯨
+                            <% } %>
+                            <% for(let i = 0; i < 5 - Math.ceil(book.rating); i++) { %>
+                                ☆
+                            <% } %>
+                            (<%= book.rating %>)
+                        </div>
+                        <div class="book-actions">
+                            <a href="/updateData?updateId=<%= book._id %>" class="action-btn edit-btn">Edit</a>
+                            <button onclick="confirmDelete('<%= book._id %>', '<%= book.title %>')" class="action-btn delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <!-- Delete Confirmation Dialog -->
+    <div id="deleteDialog" class="confirmation-dialog">
+        <div class="dialog-content">
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete "<span id="bookTitle"></span>"?</p>
+            <p class="text-muted">This action cannot be undone.</p>
+            <div class="dialog-buttons">
+                <button onclick="hideDeleteDialog()" class="dialog-btn cancel-btn">Cancel</button>
+                <button onclick="deleteBook()" class="dialog-btn confirm-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bookToDelete = null;
+
+        function confirmDelete(bookId, bookTitle) {
+            bookToDelete = bookId;
+            document.getElementById('bookTitle').textContent = bookTitle;
+            document.getElementById('deleteDialog').style.display = 'flex';
+        }
+
+        function hideDeleteDialog() {
+            document.getElementById('deleteDialog').style.display = 'none';
+            bookToDelete = null;
+        }
+
+        function deleteBook() {
+            if (bookToDelete) {
+                window.location.href = `/delete/${bookToDelete}`;
+            }
+        }
+
+        // Close dialog when clicking outside
+        document.getElementById('deleteDialog').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDeleteDialog();
+            }
+        });
+
+        // Close dialog with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideDeleteDialog();
+            }
+        });
+    </script>
+</body>
+</html> 
